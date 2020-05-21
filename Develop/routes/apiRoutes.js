@@ -21,6 +21,7 @@ module.exports = function(app) {
   
     app.get("/api/notes", function(req, res) {
       res.send(notesData);
+      
     });
   
   
@@ -33,13 +34,13 @@ module.exports = function(app) {
     // ---------------------------------------------------------------------------
   
     app.post("/api/notes", function(req, res) {
-      // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-      // It will do this by sending out the value "true" have a table
-      // req.body is available since we're using the body parsing middleware
-      
+
         notesData.push(req.body);
-        console.log(req.body)
-        //res.json(true);
+        console.log(req.body);
+        res.json({
+            success: true,
+            data: notesData,
+            message: "Successfully added note"});
       
     });
   
@@ -54,5 +55,6 @@ module.exports = function(app) {
   
       res.json({ ok: true });
     });*/
+    
   };
   
