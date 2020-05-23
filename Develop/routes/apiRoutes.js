@@ -10,7 +10,9 @@
 
 
 
-var notesData = require("../db/db");
+//var notesData = require("../db/db") ; 
+var fs = require('fs')
+const notesArray = []
 
 module.exports = function(app) {
     // API GET Requests
@@ -20,7 +22,7 @@ module.exports = function(app) {
     // ---------------------------------------------------------------------------
   
     app.get("/api/notes", function(req, res) {
-      res.send(notesData);
+      res.send(notesJSON);
       
     });
   
@@ -34,27 +36,31 @@ module.exports = function(app) {
     // ---------------------------------------------------------------------------
   
     app.post("/api/notes", function(req, res) {
+        
+        //console.log("notesData", notesData);
+        //formatting request data into JSON
+        //const reqFormatted = JSON.stringify(req.body)
+        //push formatted data to notes data variable
+        notesArray.push(req.body);
+      
+        notesJSON = JSON.stringify(notesArray)
+        console.log(notesJSON)
 
-        notesData.push(req.body);
-        console.log(req.body);
+        fs.appendFile("./db/db.json", notesJSON, (err)=> {
+            console.log(err);
+        } )
+
+
+        
+        
         res.json({
             success: true,
-            data: notesData,
+            data: "data",
             message: "Successfully added note"});
       
     });
   
-    // ---------------------------------------------------------------------------
-    // I added this below code so you could clear out the table while working with the functionality.
-    // Don"t worry about it!
-  
-   /* app.post("/api/clear", function(req, res) {
-      // Empty out the arrays of data
-      tableData.length = 0;
-      waitListData.length = 0;
-  
-      res.json({ ok: true });
-    });*/
+ 
     
   };
   
